@@ -1,7 +1,9 @@
 package com.example.finalproject
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -39,7 +41,8 @@ class LoginActivity : ComponentActivity() {
                 AppTheme {
                     var email by remember { mutableStateOf("") }
                     var password by remember { mutableStateOf("") }
-
+                    var st by remember { mutableStateOf("") }
+                    var stuser by remember { mutableStateOf("") }
                     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                         Box(modifier = Modifier.fillMaxSize()) {
 
@@ -79,14 +82,43 @@ class LoginActivity : ComponentActivity() {
                                         .fillMaxWidth()
                                         .padding(bottom = 8.dp)
                                 )
+
                                 Button(
                                     onClick = {
-
+                                        // Check if the login is valid
+                                       val isValidLogin = UsersMV.checkLogin(email, password)
+                                        //Test Login data
+//                                        val userslog=UsersMV.getData(email, password)
+//                                        st=isValidLogin.toString()
+//                                        stuser=userslog.toString()
+                                        if (isValidLogin) {
+                                            //change value in session model
+                                            UsersMV.Login(email, password)
+                                            // after login go to page
+                                            val intent = Intent(this@LoginActivity, GuestActivity::class.java)
+                                            startActivity(intent)
+                                        } else {
+                                            // Show invalid login message
+                                            Toast.makeText(
+                                                this@LoginActivity,
+                                                "Invalid email or password",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                        }
                                     },
                                     modifier = Modifier.fillMaxWidth()
                                 ) {
-                                    Text("Register")
+                                    Text("Login")
                                 }
+                                TextButton(onClick={
+                                    val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
+                                    startActivity(intent)
+                                }) {
+
+                                    //test login
+/*                                    Text(text = st)
+                                    Text(text = stuser)*/
+                                    Text(text = " Register ")}
                             }
                         }
                     }

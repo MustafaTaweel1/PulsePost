@@ -1,5 +1,6 @@
 package com.example.finalproject
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -22,6 +23,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -32,6 +34,7 @@ import com.example.finalproject.ModelView.UserViewModel
 import com.example.finalproject.ui.theme.AppTheme
 
 class RegisterActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -42,11 +45,14 @@ class RegisterActivity : ComponentActivity() {
         val userDao = db.userDao()
         val UsersMV = UserViewModel(userDao)
 
+
         setContent {
             AppTheme {
-
+                // local context variable
+                val context = LocalContext.current
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Box(modifier = Modifier.fillMaxSize()) {
+
 
                         Image(
                             painter = painterResource(id = R.drawable.background),
@@ -149,6 +155,8 @@ class RegisterActivity : ComponentActivity() {
                                             birthday = birthday
                                         )
                                         UsersMV.addUser(user)
+                                        val intent = Intent(context, LoginActivity::class.java)
+                                        context.startActivity(intent)
                                         Log.d("LoginActivity", "User registered successfully")
                                     } catch (e: Exception) {
                                         Log.e("LoginActivity", "Error registering user", e)

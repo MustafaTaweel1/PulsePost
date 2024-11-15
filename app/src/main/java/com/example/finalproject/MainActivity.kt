@@ -37,18 +37,19 @@ import com.example.finalproject.DB.AppDatabase
 import com.example.finalproject.Model.DAO.PostDao
 import com.example.finalproject.Model.Users
 import com.example.finalproject.Model.Post
+import com.example.finalproject.ModelView.UserViewModel
 
 class MainActivity : ComponentActivity() {
-  private val SessionVM by viewModels<SessionViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-/*
+
         val db = Room.databaseBuilder(
             applicationContext,
             AppDatabase::class.java, AppDatabase.DATABASE_NAME
         ).build()
-*/
+        val userDao = db.userDao()
+        val SessionVM = SessionViewModel(userDao)
 
 
         setContent {
@@ -102,7 +103,7 @@ fun HomePaeg(modifier: Modifier = Modifier,SessionVM: SessionViewModel) {
                     ) {
                         Text("Guest ")
                     }
-              /*      if(SessionVM.isUserLoggedIn() != true) {*/
+                   if(SessionVM.isUserLoggedIn() != true) {
                         Button(
                             onClick = {
                                 val intent = Intent(context, LoginActivity::class.java)
@@ -111,7 +112,7 @@ fun HomePaeg(modifier: Modifier = Modifier,SessionVM: SessionViewModel) {
                             modifier = Modifier.padding(8.dp)
                         ) {
                             Text("Login")
-                        /*}*/
+                        }
                     }
                     }
 
