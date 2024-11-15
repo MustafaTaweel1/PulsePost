@@ -7,18 +7,44 @@ import kotlinx.coroutines.launch
 import com.example.finalproject.Model.DAO.UserDao
 import com.example.finalproject.Model.Users
 
+class SessionViewModel() : ViewModel() {
+
+    private val _isLoggedIn = mutableStateOf(false)
+//    public val isLoggedIn = _isLoggedIn
+
+
+    
+    fun isUserLoggedIn(): Boolean {
+        return _isLoggedIn.value
+    }
+
+
+}
+
+
+/*
+*
 class SessionViewModel(private val userDao: UserDao) : ViewModel() {
     private val _userState = mutableStateOf<Users?>(null)
-    val userState = _userState
+    public val userState = _userState
+
+    private val _isLoggedIn = mutableStateOf(false)
+//    public val isLoggedIn = _isLoggedIn
 
     fun loginUser(email: String, password: String) {
         viewModelScope.launch {
             val user = userDao.getUserForLogin(email, password)
             _userState.value = user
+            _isLoggedIn.value = true
         }
+    }
+
+    fun isUserLoggedIn(): Boolean {
+        return _isLoggedIn.value
     }
 
     fun logoutUser() {
         _userState.value = null
+        _isLoggedIn.value = false
     }
-}
+}*/

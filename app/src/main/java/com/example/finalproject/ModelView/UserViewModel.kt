@@ -9,7 +9,15 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class UserViewModel(private val userDao: UserDao) : ViewModel() {
-    val user= userDao.getAll()
+    private val _users = MutableStateFlow<List<Users>>(emptyList())
+    val users: StateFlow<List<Users>> = _users.asStateFlow()
+
+    init {
+        viewModelScope.launch {
+            _users.value = userDao.getAll()
+        }
+    }
+
     private val _user = mutableListOf<String>()
 
     val userlist:List<String>get() = _user

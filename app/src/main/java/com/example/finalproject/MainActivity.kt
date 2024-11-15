@@ -34,25 +34,32 @@ import androidx.compose.ui.unit.dp
 import com.example.finalproject.ModelView.SessionViewModel
 import androidx.room.Room
 import com.example.finalproject.DB.AppDatabase
+import com.example.finalproject.Model.DAO.PostDao
 import com.example.finalproject.Model.Users
 import com.example.finalproject.Model.Post
 
 class MainActivity : ComponentActivity() {
-    private val SessionVM by viewModels<SessionViewModel>()
+  private val SessionVM by viewModels<SessionViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+/*
+        val db = Room.databaseBuilder(
+            applicationContext,
+            AppDatabase::class.java, AppDatabase.DATABASE_NAME
+        ).build()
+*/
+
 
         setContent {
-/*
-            val intent = Intent(this, LoginActivity::class.java)
-*/
+
 
 
             MaterialTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     HomePaeg(
                         modifier = Modifier.padding(innerPadding)
+                        ,SessionVM
                     )
                 }
             }
@@ -61,7 +68,8 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun HomePaeg(modifier: Modifier = Modifier) {
+fun HomePaeg(modifier: Modifier = Modifier,SessionVM: SessionViewModel) {
+
     val context = LocalContext.current
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
@@ -94,15 +102,18 @@ fun HomePaeg(modifier: Modifier = Modifier) {
                     ) {
                         Text("Guest ")
                     }
-                    Button(onClick ={
-                        val intent = Intent(context, LoginActivity::class.java)
-                        context.startActivity(intent)
-                    },
-                        modifier = Modifier.padding(8.dp)
-                    ) {
-                        Text("Login")
+              /*      if(SessionVM.isUserLoggedIn() != true) {*/
+                        Button(
+                            onClick = {
+                                val intent = Intent(context, LoginActivity::class.java)
+                                context.startActivity(intent)
+                            },
+                            modifier = Modifier.padding(8.dp)
+                        ) {
+                            Text("Login")
+                        /*}*/
                     }
-
+                    }
 
                 }
             }
@@ -110,7 +121,7 @@ fun HomePaeg(modifier: Modifier = Modifier) {
 
     }
 
-}
+
 
 @Preview(showBackground = true)
 @Composable
