@@ -12,11 +12,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
-import com.example.finalproject.ui.theme.FinalProjectTheme
+import com.example.finalproject.ui.theme.AppTheme
+
 import com.example.finalproject.ModelView.SessionViewModel
-import androidx.room.Room
-import com.example.finalproject.DB.AppDatabase
-import com.example.finalproject.Model.Users
 
 
 class LoginActivity : ComponentActivity() {
@@ -26,17 +24,8 @@ class LoginActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        val db = Room.databaseBuilder(
-            applicationContext,
-            AppDatabase::class.java, "database-name"
-        ).build()
-        val userDao = db.userDao()
-//        val postDao = db.postDao()
-        val users: List<Users> = userDao.getAll()
-
-
         setContent {
-            FinalProjectTheme {
+            AppTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Column(
                         modifier = Modifier

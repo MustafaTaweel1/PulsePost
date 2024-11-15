@@ -15,4 +15,11 @@ abstract class AppDatabase: RoomDatabase(
    abstract fun userDao(): UserDao
 /*   abstract  fun postDao(): PostDao*/
 
+   companion object {
+      const val DATABASE_NAME = "SocialDB"
+   }
+
+   fun getDatabaseName(): String {
+      return DATABASE_NAME
+   }
 }
