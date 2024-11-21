@@ -19,9 +19,9 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.room.Room
 import com.example.finalproject.DB.AppDatabase
-import com.example.finalproject.ui.theme.AppTheme
 import com.example.finalproject.ModelView.SessionViewModel
 import com.example.finalproject.ModelView.UserViewModel
+import com.example.finalproject.ui.theme.AppTheme
 
 class LoginActivity : ComponentActivity() {
 
@@ -31,10 +31,8 @@ class LoginActivity : ComponentActivity() {
         enableEdgeToEdge()
 
         // Setting up the database
-        val db = Room.databaseBuilder(
-            applicationContext,
-            AppDatabase::class.java, AppDatabase.DATABASE_NAME
-        ).fallbackToDestructiveMigration().build()
+        val db = AppDatabase.getDatabase(applicationContext)
+
         val userDao = db.userDao()
         val sessionMV = SessionViewModel()
         val userMV = UserViewModel(userDao)
@@ -45,12 +43,15 @@ class LoginActivity : ComponentActivity() {
                 var email by remember { mutableStateOf("") }
                 var password by remember { mutableStateOf("") }
 
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                Scaffold(
+                    modifier = Modifier.fillMaxSize(),
+                    containerColor = MaterialTheme.colorScheme.background
+                ) { innerPadding ->
                     Box(modifier = Modifier.fillMaxSize()) {
 
                         // Background image with 80% opacity
                         Image(
-                            painter = painterResource(id = R.drawable.background),
+                            painter = painterResource(id = R.drawable.backgroundv2),
                             contentDescription = "Background Image",
                             modifier = Modifier.fillMaxSize(),
                             contentScale = ContentScale.Crop,
@@ -66,28 +67,50 @@ class LoginActivity : ComponentActivity() {
                             verticalArrangement = Arrangement.Center
                         ) {
 
-                            // Email input field
                             TextField(
                                 value = email,
                                 onValueChange = { email = it },
-                                label = { Text("Email") },
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(bottom = 8.dp)
+                                label = { Text("Email", style = MaterialTheme.typography.labelMedium) },
+                                colors = TextFieldDefaults.colors(
+                                    focusedContainerColor = MaterialTheme.colorScheme.surface,
+                                    unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+                                    cursorColor = MaterialTheme.colorScheme.primary,
+                                    focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                                    unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
+                                    focusedIndicatorColor = MaterialTheme.colorScheme.primary,
+                                    unfocusedIndicatorColor = MaterialTheme.colorScheme.outline
+                                ),
+                                shape = MaterialTheme.shapes.medium,
+                                singleLine = true,
+                                modifier = Modifier.fillMaxWidth()
                             )
 
-                            // Password input field
+                            Spacer(modifier = Modifier.height(16.dp))
+
+
+
                             TextField(
                                 value = password,
                                 onValueChange = { password = it },
-                                label = { Text("Password") },
+                                label = { Text("Password", style = MaterialTheme.typography.labelMedium) },
                                 visualTransformation = PasswordVisualTransformation(),
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(bottom = 8.dp)
+                                colors = TextFieldDefaults.colors(
+                                    focusedContainerColor = MaterialTheme.colorScheme.surface,
+                                    unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+                                    cursorColor = MaterialTheme.colorScheme.primary,
+                                    focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                                    unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
+                                    focusedIndicatorColor = MaterialTheme.colorScheme.primary,
+                                    unfocusedIndicatorColor = MaterialTheme.colorScheme.outline
+                                ),
+                                shape = MaterialTheme.shapes.medium,
+                                singleLine = true,
+                                modifier = Modifier.fillMaxWidth()
                             )
 
-                            // Login button
+                            Spacer(modifier = Modifier.height(16.dp))
+
+
                             Button(
                                 onClick = {
                                     // Check if login credentials are valid using SessionViewModel
@@ -95,7 +118,7 @@ class LoginActivity : ComponentActivity() {
 
                                     userMV.loginUser(email, password) { isSuccess ->
                                         if (isSuccess) {
-                                           var user = userMV.getUserData(email, password)
+                                            val user = userMV.getUserData(email, password)
                                             val intent = Intent(context, HomeActivity::class.java)
                                             context.startActivity(intent)
                                         } else {
@@ -108,18 +131,40 @@ class LoginActivity : ComponentActivity() {
                                         }
                                     }
                                 },
-                                modifier = Modifier.fillMaxWidth()
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = 8.dp),
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = MaterialTheme.colorScheme.tertiary,
+                                    contentColor = MaterialTheme.colorScheme.onTertiary
+                                ),
+                                shape = MaterialTheme.shapes.large,
+                                elevation = ButtonDefaults.buttonElevation(
+                                    defaultElevation = 4.dp,
+                                    pressedElevation = 8.dp
+                                )
                             ) {
-                                Text("Login")
+                                Text("Login", style = MaterialTheme.typography.labelLarge) // Use theme-defined typography
                             }
 
-                            // Register button to navigate to Registration screen
-                            TextButton(onClick = {
-                                val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
-                                startActivity(intent)
-                            }) {
-                                Text(text = "Register")
+// Register TextButton with Material3 style
+                            TextButton(
+                                onClick = {
+                                    val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
+                                    startActivity(intent)
+                                },
+                                modifier = Modifier.padding(vertical = 8.dp),
+                                colors = ButtonDefaults.textButtonColors(
+                                    contentColor = MaterialTheme.colorScheme.primary // Theme-defined primary color
+                                )
+                            ) {
+                                Text(
+                                    text = "Register",
+                                    style = MaterialTheme.typography.labelMedium // Use theme-defined typography
+                                )
+
                             }
+
                         }
                     }
                 }

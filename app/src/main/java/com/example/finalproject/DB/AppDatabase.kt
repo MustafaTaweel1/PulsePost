@@ -27,7 +27,7 @@ abstract class AppDatabase: RoomDatabase(
       fun getDatabase(context: Context): AppDatabase {
          return INSTANCE ?: synchronized(this) {
             INSTANCE ?: Room.databaseBuilder(context, AppDatabase::class.java, "SocialDB")
-               .build().also { INSTANCE = it }
+               .fallbackToDestructiveMigration().build().also { INSTANCE = it }
          }
       }
 
