@@ -15,6 +15,21 @@
         android:theme="@style/Theme.FinalProject"
         tools:targetApi="31">
         <activity
+            android:name=".PostView.ListPostActivity"
+            android:exported="false"
+            android:label="@string/title_activity_list_post"
+            android:theme="@style/Theme.FinalProject" />
+        <activity
+            android:name=".PostView.InsertActivity"
+            android:exported="false"
+            android:label="@string/title_activity_insert"
+            android:theme="@style/Theme.FinalProject" />
+        <activity
+            android:name=".HomeActivity"
+            android:exported="false"
+            android:label="@string/title_activity_home"
+            android:theme="@style/Theme.FinalProject" />
+        <activity
             android:name=".RegisterActivity"
             android:exported="false"
             android:label="@string/title_activity_register"

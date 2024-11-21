@@ -4,10 +4,16 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import com.example.finalproject.Model.Post
+import kotlinx.coroutines.flow.Flow
+
 @Dao
 interface PostDao {
-    @Query("Select * FROM Post")
-    fun getAllPost(): List<Post>
+    @Query("SELECT * FROM Post")
+    suspend fun getAllPost():List<Post>
+/*
+    suspend fun getAllPost():Flow<List<Post>>
+*/
+
     //GET POST BY User
     @Query("SELECT * FROM Post WHERE userId = :userId ")
     fun getPostByUser(userId: Int): Post?
@@ -26,6 +32,8 @@ interface PostDao {
     // DELETE POST BY ID
     @Query("DELETE FROM Post WHERE id = :id")
     suspend fun deletePostById(id: Int)
+
+
     // GET ALL POST WITH COMMENTS
 /*    @Query("SELECT * FROM Post JOIN Comment ON Post.id = Comment.PostID ")
     fun getPostWithComments(): List<Post>*/

@@ -17,7 +17,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-/*import com.example.finalproject.ui.theme.FinalProjectTheme*/
 import androidx.compose.material3.*
 
 import androidx.compose.material3.FilledTonalButton
@@ -49,7 +48,7 @@ class MainActivity : ComponentActivity() {
             AppDatabase::class.java, AppDatabase.DATABASE_NAME
         ).build()
         val userDao = db.userDao()
-        val SessionVM = SessionViewModel(userDao)
+        val SessionVM = SessionViewModel()
 
 
         setContent {
@@ -103,17 +102,17 @@ fun HomePaeg(modifier: Modifier = Modifier,SessionVM: SessionViewModel) {
                     ) {
                         Text("Guest ")
                     }
-                   if(SessionVM.isUserLoggedIn() != true) {
+                   /*if(SessionVM.isUserLoggedIn() != true) {*/
                         Button(
                             onClick = {
                                 val intent = Intent(context, LoginActivity::class.java)
                                 context.startActivity(intent)
                             },
-                            modifier = Modifier.padding(8.dp)
+                            modifier = Modifier.padding(8.dp),
                         ) {
                             Text("Login")
                         }
-                    }
+                    
                     }
 
                 }

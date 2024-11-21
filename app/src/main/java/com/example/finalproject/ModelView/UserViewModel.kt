@@ -18,7 +18,7 @@ class UserViewModel(private val userDao: UserDao) : ViewModel() {
         }
     }
 
-//    private val _user = mutableListOf<String>()
+    //    private val _user = mutableListOf<String>()
 //
 //    val userlist:List<String>get() = _user
     fun addUser(user: Users) {
@@ -33,21 +33,8 @@ class UserViewModel(private val userDao: UserDao) : ViewModel() {
         }
     }
 
-    fun checkLogin(email: String, password: String): Boolean {
-        var isValidLogin = false
-        viewModelScope.launch {
-            val user = userDao.getUserForLogin(email, password)
 
-            if(user!=null) {
-                isValidLogin = true
-            }
-
-
-           /* isValidLogin = user != null*/
-        }
-        return isValidLogin
-    }
-/*    fun getData(email: String,password: String):Users?{
+    /*    fun getData(email: String,password: String):Users?{
         var user:Users?=null
         viewModelScope.launch {
             user = userDao.getUserForLogin(email, password)
@@ -55,12 +42,22 @@ class UserViewModel(private val userDao: UserDao) : ViewModel() {
         return user
     }
     */
-    fun Login(email: String, password: String) {
+    fun loginUser(email: String, password: String, onResult: (Boolean) -> Unit) {
         viewModelScope.launch {
             val user = userDao.getUserForLogin(email, password)
             if (user != null) {
-                _users.value = listOf(user)
+
+                onResult(true)
+            } else {
+                onResult(false)
             }
         }
+    }
+    fun getUserData(email: String, password: String,): Users? {
+        var user: Users? = null
+        viewModelScope.launch {
+            user = userDao.getUserForLogin(email, password)
+        }
+        return user
     }
 }
