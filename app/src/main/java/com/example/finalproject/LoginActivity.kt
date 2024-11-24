@@ -17,10 +17,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
-import androidx.room.Room
 import com.example.finalproject.DB.AppDatabase
 import com.example.finalproject.ModelView.SessionViewModel
 import com.example.finalproject.ModelView.UserViewModel
+import com.example.finalproject.PostView.HomeActivity
 import com.example.finalproject.ui.theme.AppTheme
 
 class LoginActivity : ComponentActivity() {
@@ -114,11 +114,12 @@ class LoginActivity : ComponentActivity() {
                             Button(
                                 onClick = {
                                     // Check if login credentials are valid using SessionViewModel
-                                    sessionMV.setisLoggedIn(true)
 
                                     userMV.loginUser(email, password) { isSuccess ->
                                         if (isSuccess) {
                                             val user = userMV.getUserData(email, password)
+                                            sessionMV.setUserState(user)
+                                            sessionMV.setIsLoggedIn(true)
                                             val intent = Intent(context, HomeActivity::class.java)
                                             context.startActivity(intent)
                                         } else {

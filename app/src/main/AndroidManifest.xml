@@ -15,6 +15,11 @@
         android:theme="@style/Theme.FinalProject"
         tools:targetApi="31">
         <activity
+            android:name=".PostView.PostDetailActivity"
+            android:exported="false"
+            android:label="@string/title_activity_post_detail"
+            android:theme="@style/Theme.FinalProject" />
+        <activity
             android:name=".PostView.ListPostActivity"
             android:exported="false"
             android:label="@string/title_activity_list_post"
@@ -25,7 +30,7 @@
             android:label="@string/title_activity_insert"
             android:theme="@style/Theme.FinalProject" />
         <activity
-            android:name=".HomeActivity"
+            android:name=".PostView.HomeActivity"
             android:exported="false"
             android:label="@string/title_activity_home"
             android:theme="@style/Theme.FinalProject" />

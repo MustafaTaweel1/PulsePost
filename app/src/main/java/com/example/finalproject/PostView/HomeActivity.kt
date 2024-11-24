@@ -1,4 +1,4 @@
-package com.example.finalproject
+package com.example.finalproject.PostView
 
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -11,6 +11,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -23,12 +24,10 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -53,7 +52,6 @@ import com.example.finalproject.ModelView.CommentViewModel
 import com.example.finalproject.ModelView.PostViewModel
 import com.example.finalproject.ModelView.SessionViewModel
 import com.example.finalproject.ModelView.UserViewModel
-import com.example.finalproject.PostView.InsertActivity
 import com.example.finalproject.ui.theme.AppTheme
 @OptIn(ExperimentalMaterial3Api::class)
 class HomeActivity : ComponentActivity() {
@@ -113,10 +111,13 @@ class HomeActivity : ComponentActivity() {
                     },
                     content = { innerPadding ->
                         Column(modifier = Modifier.padding(innerPadding)) {
-                            Greeting2(
-                                postViewModel = postViewModel,
-                                commentViewModel = commentVM,
-                                deletestat=deleteState
+//                            HomePost(
+//                                postViewModel = postViewModel,
+//                                commentViewModel = commentVM,
+//                                deletestat=deleteState
+//                            )
+                            Text(
+                                text = sessionMV.getIsLoggedIn().toString()
                             )
                         }
                     }
@@ -127,7 +128,7 @@ class HomeActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting2(modifier: Modifier = Modifier, postViewModel: PostViewModel, commentViewModel: CommentViewModel,deletestat:Boolean) {
+fun HomePost(modifier: Modifier = Modifier, postViewModel: PostViewModel, commentViewModel: CommentViewModel,deletestat:Boolean) {
     val postList by postViewModel.posts.collectAsState()
     Column(modifier = modifier) {
         ItemPost(postList, postViewModel, commentViewModel, deletestat)
@@ -143,7 +144,14 @@ fun ItemPost(postList: List<Post>, postViewModel: PostViewModel, commentViewMode
     ) {
         items(postList.sortedBy { it.title }) { post ->
             Card(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().clickable {
+                val intent = Intent(context, PostDetailActivity::class.java).apply {
+                    putExtra("POST_ID", post.id)
+                    putExtra("POST_TITLE", post.title)
+                    putExtra("POST_BODY", post.body)
+                }
+                context.startActivity(intent)
+            },
                 colors = CardDefaults.cardColors(
                     containerColor = MaterialTheme.colorScheme.surfaceContainerLow
                 )
